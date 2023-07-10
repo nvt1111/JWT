@@ -1,0 +1,27 @@
+GET http://localhost:3000
+
+
+###
+POST http://localhost:3000/user/register
+Content-Type: application/json
+
+{
+    "email": "hieu1@gmail.com",
+    "password": "111"
+}
+
+###
+POST http://localhost:3000/user/refresh-token
+
+###
+POST http://localhost:3000/user/login
+Content-Type: application/json
+
+{
+    "email": "thai@gmail.com",
+    "password": "111"
+}
+
+###
+POST http://localhost:3000/user/logout
+
