@@ -1,5 +1,6 @@
 const JWT = require('jsonwebtoken')
 const createError = require('http-errors')
+const client = require('../helpers/connection_redis')
 // hafm tao access Token
 const signAccessToken = async (userId) =>{
     return new Promise((resolve, reject)=>{
@@ -18,6 +19,7 @@ const signAccessToken = async (userId) =>{
 }
 
 /////// Verify accesstoken
+// xử lí rõ nỗi đúng ý như hết hạn , ko valid
 
 const verifyAccessToken = (req, res, next) =>{
     if(!req.headers['authorization']){
@@ -29,11 +31,15 @@ const verifyAccessToken = (req, res, next) =>{
     // nos thuoc authorization cua req.header
     JWT.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,payload)=>{
         if(err){
-            return next(createError.Unauthorized()) // co function ()
+            if(err.name === 'JsonWebTokenError'){
+                return next(createError.Unauthorized()) // co function ()
+            }
+            return next(createError.Unauthorized(err.message));
+            // trả về lỗi rằng  à expired
         }
         req.payload = payload;
         console.log(`day neeeeeeeeeeeeeeeeee ${payload}`)
-        next();
+        next();// ko lỗi thì next
     })
 }
 
@@ -49,12 +55,41 @@ const signRefreshToken = async (userId) =>{
         }
         JWT.sign(payload, secret, options, (err, token)=>{
             if(err) reject(err)
-            resolve(token)
+            // tostring vì userID ddag là Objectid
+            // tajo token thoi han 1 nam
+            client.set(userId.toString(), token, "EX", 365*24*60*60,(err, reply)=>{
+                if(err){
+                    return reject(createError.InternalServerError())
+                }
+                resolve(token)
+            })
+            
         })
     })
 }
+
+const verifyRefreshToken = async (refreshToken)=>{
+    return new Promise((resolve,reject)=>{
+        JWT.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,(err, payload)=>{
+            if(err) reject(err)
+            client.get(payload.userId, (err, reply)=>{
+                // reply la cai tra laji, la RT
+                if(err) reject(createError.InternalServerError());
+                // dam bao RT hop le trong redis, con trong redis
+                if(refreshToken === reply){ // xem no nam trong Db khong
+                    return resolve(payload)
+                }
+                return reject(createError.Unauthorized())
+            })
+             //thành công
+        })
+    })
+    
+}
+
 module.exports = {
     signAccessToken,
     verifyAccessToken,
-    signRefreshToken
+    signRefreshToken,
+    verifyRefreshToken
 }

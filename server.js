@@ -4,15 +4,15 @@ require('dotenv').config()
 const createError = require('http-errors')
 const UserRoute = require('./routes/User.route')
 require('./helpers/connections_mongodb')
-const client = require('./helpers/connection_redis')
+// const client = require('./helpers/connection_redis')
 
 
-client.SET('foo','bar')
+// client.SET('foo','bar')
 
-client.GET('foo', (err, value)=>{
-    if(err) console.log(err.message)
-    console.log(value)
-})
+// client.GET('foo', (err, value)=>{
+//     if(err) console.log(err.message)
+//     console.log(value)
+// })
 app.get('/', (req,res, next)=>{
     console.log('a::',a)
     res.send('Home page')

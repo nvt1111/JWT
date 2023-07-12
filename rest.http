@@ -6,27 +6,34 @@ POST http://localhost:3000/user/register
 Content-Type: application/json
 
 {
-    "email": "hieu1@gmail.com",
+    "email": "hieu5@gmail.com",
     "password": "111"
 }
 
 ###
 POST http://localhost:3000/user/refresh-token
+Content-Type: application/json
 
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGFlYzNjODVkYjBiYThhOTlmODNlYjciLCJpYXQiOjE2ODkxNzUwODAsImV4cCI6MTcyMDczMjY4MH0.jskfTDIvkaH-pAWB5G3VWtMClxs8DZmVfk6iKtVvRvY"
+}
 ###
 POST http://localhost:3000/user/login
 Content-Type: application/json
 
 {
-    "email": "hieu1@gmail.com",
+    "email": "hieu5@gmail.com",
     "password": "111"
 }
 
 ###
-POST http://localhost:3000/user/logout
+DELETE http://localhost:3000/user/logout
+Content-Type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGFlNzNiNTc1OTI0NDhiZjEzNDhmNDMiLCJpYXQiOjE2ODkxNzM5MzYsImV4cCI6MTcyMDczMTUzNn0.mDoZLAzqw4OOidC9HIuuzbd-g6x4si99llWOI2b1Ovo"
+}
 
 ###
 GET http://localhost:3000/user/getlists
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGFjMmFmYWUzNTkzY2Q4MmU4ZDA4NzMiLCJpYXQiOjE2ODkwOTI0ODIsImV4cCI6MTY4OTA5NjA4Mn0.E4bbB2QpqeEBRF4ZBXgYNgh_nJb_Si807dteOPD8T_A
-
-
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGFlYzNjODVkYjBiYThhOTlmODNlYjciLCJpYXQiOjE2ODkxNzUzNzcsImV4cCI6MTY4OTE3NTQzN30.WUcMN6s3mDSm8DhK3V5NpT2NpGX42wtUHG5Iw_GLAGs
