@@ -3,12 +3,11 @@ const route = express.Router()
 const User = require('../models/User.model')
 const {userValidate} = require('../helpers/validation')
 const createError = require('http-errors')
-const {signAccessToken} = require('../helpers/jwt_service')
+const {signAccessToken, verifyAccessToken, signRefreshToken} = require('../helpers/jwt_service')
 
 route.post('/register', async (req,res,next)=>{
     try{
         const {email, password} = req.body
-        console.log(`haha ${email} kakkak ${password} ...${req.body}`)
         const {error} = userValidate(req.body);
         console.log(`;;;;;;;; validate : `,error)
         // if(!email || !password){
@@ -56,16 +55,34 @@ route.post('/login', async (req,res,next)=>{
             throw createError.Unauthorized()
         }
         const accessToken = await signAccessToken(user._id);
-        res.json({
-            accessToken
+        const refreshToken = await signRefreshToken(user._id);
+        res.json({ // khi di duong se dc cap access va reffresh 
+            accessToken,
+            refreshToken
         })
     }catch(error){
-        next(error)
+        next(error);
     }
 })
 route.post('/logout', (req,res,next)=>{
     res.send('function logout')
 })
 
+route.get('/getlists', verifyAccessToken,(req,res,next)=>{
+    console.log(req.headers)
+    const listUsers = [
+        {
+            email: 'abc@gmail.com'
+        },
+        {
+            email: 'def@gmail.com'
+        }
+// khi verify thanh cong thi tra ve list nay
+    ]
+    console.log('hahahahhahahahhh')
+    res.json({
+        listUsers
+    })
+})
 
 module.exports = route;

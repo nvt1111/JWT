@@ -18,10 +18,15 @@ POST http://localhost:3000/user/login
 Content-Type: application/json
 
 {
-    "email": "thai@gmail.com",
+    "email": "hieu1@gmail.com",
     "password": "111"
 }
 
 ###
 POST http://localhost:3000/user/logout
+
+###
+GET http://localhost:3000/user/getlists
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGFjMmFmYWUzNTkzY2Q4MmU4ZDA4NzMiLCJpYXQiOjE2ODkwOTI0ODIsImV4cCI6MTY4OTA5NjA4Mn0.E4bbB2QpqeEBRF4ZBXgYNgh_nJb_Si807dteOPD8T_A
+
 
